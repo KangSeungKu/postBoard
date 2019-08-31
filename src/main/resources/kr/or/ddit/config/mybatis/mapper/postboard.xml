@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="postboard">
+	
+	<insert id="insertPostBoard" parameterType="postBoard">
+		insert into postboard (boardseq, boardnm, boardusage, userid, board_dt)
+		values (postboard_seq.nextval, #{boardnm}, #{boardusage}, #{userid}, sysdate)
+	</insert>
+	
+	<update id="updatePostBoard" parameterType="postBoard">
+		update postboard set boardnm=#{boardnm}, boardusage=#{boardusage}
+		where boardseq=#{boardseq}
+	</update>
+	
+	<!-- delete from postboard where boardseq=#{boardseq} -->
+	<delete id="deletePostBoard" parameterType="int">
+		update postboard set boardusage='N'
+		where boardseq=#{boardseq}
+	</delete>
+	
+	<select id="getPostBoardList" resultType="postBoard">
+		select * from postboard
+	</select>
+	
+	<select id="getPostBoard" parameterType="int" resultType="postBoard">
+		select * from postboard where boardseq=#{boardseq}
+	</select>
+	
+</mapper>
