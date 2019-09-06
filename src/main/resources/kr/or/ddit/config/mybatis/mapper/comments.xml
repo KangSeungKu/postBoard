@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="comm">
+	<insert id="insertComm" parameterType="comm">
+		insert into comments(COMMSEQ, COMMCONT, COMMWRITER, COMM_DT, COMMDEL, POSTSEQ)
+		values(comm_seq.nextval, #{commcont}, #{commwriter}, sysdate, 'Y', #{postseq})
+	</insert>
+	
+	<update id="updateComm" parameterType="comm">
+		update comments set commcont=#{commcont}
+		where commseq=#{commseq}
+	</update>
+	
+	<update id="deleteComm" parameterType="comm">
+		update comments set commdel='N'
+		where commseq=#{commseq}
+	</update>
+	
+	<select id="getCommList" parameterType="int" resultType="comm">
+		select * from comments where postseq=#{postseq}
+	</select>
+</mapper>

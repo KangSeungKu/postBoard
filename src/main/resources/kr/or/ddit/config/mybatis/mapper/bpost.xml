@@ -11,6 +11,14 @@
 		values (#{postseq}, #{boardseq}, #{posttitle}, #{postcont}, #{userid}, sysdate, #{postdel}, #{postseq})
 	</insert>
 	
+	<insert id="insertReplyPost" parameterType="bPost" useGeneratedKeys="true" keyProperty="postseq">
+		<selectKey keyProperty="postseq" resultType="int" order="BEFORE">
+			select post_seq.nextval from dual
+		</selectKey>
+		insert into POST(POSTSEQ, BOARDSEQ, POSTTITLE, POSTCONT, USERID, POST_DT, POSTDEL, PARENTSEQ, GN)
+		values (#{postseq}, #{boardseq}, #{posttitle}, #{postcont}, #{userid}, sysdate, #{postdel}, #{parentseq}, #{gn})
+	</insert>
+	
 	<update id="updatePost" parameterType="bPost">
 		update POST set POSTTITLE=#{posttitle}, POSTCONT=#{postcont}
 		where POSTSEQ=#{postseq}
@@ -46,4 +54,8 @@
 	<delete id="dropPost" parameterType="int">
 		delete from POST where POSTSEQ=#{postseq}
 	</delete>
+	
+	<select id="getMaxPostNum" resultType="int">
+		select max(postseq) from post
+	</select>
 </mapper>

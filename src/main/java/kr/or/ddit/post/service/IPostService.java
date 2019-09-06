@@ -3,6 +3,8 @@ package kr.or.ddit.post.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
+
 import kr.or.ddit.attafile.model.AttaFile;
 import kr.or.ddit.common.model.Page;
 import kr.or.ddit.post.model.Post;
@@ -18,6 +20,17 @@ public interface IPostService {
 	* Method 설명 :	게시글 생성
 	*/
 	int insertPost(Post bpost, List<AttaFile> attaList);
+	
+	/**
+	* Method : insertReplyPost
+	* 작성자 : PC-16
+	* 변경이력 :
+	* @param bpost
+	* @param attaList
+	* @return
+	* Method 설명 : 답변작성
+	*/
+	int insertReplyPost(Post bpost, List<AttaFile> attaList);
 	
 	/**
 	* Method : updatePost
@@ -60,4 +73,13 @@ public interface IPostService {
 	* Method 설명 : 게시글 단일조회
 	*/
 	Post getPost(int postseq);
+	
+	/**
+	* Method : getMaxPostNum
+	* 작성자 : PC-16
+	* 변경이력 :
+	* @return
+	* Method 설명 : 게시글 번호 최대값 조회
+	*/
+	int getMaxPostNum();
 }

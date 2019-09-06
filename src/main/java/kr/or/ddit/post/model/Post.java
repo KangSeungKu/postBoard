@@ -12,6 +12,7 @@ public class Post {
 	private Date post_dt;
 	private String postdel;
 	private int parentseq;
+	private int gn;
 	public Post() {
 		
 	}
@@ -22,7 +23,16 @@ public class Post {
 		this.userid = userid;
 		this.postdel = postdel;
 	}
-
+	
+	public Post(int boardseq, String posttitle, String postcont, String userid, String postdel, int parentseq, int gn) {
+		this.boardseq = boardseq;
+		this.posttitle = posttitle;
+		this.postcont = postcont;
+		this.userid = userid;
+		this.postdel = postdel;
+		this.parentseq = parentseq;
+		this.gn = gn;
+	}
 	public int getPostseq() {
 		return postseq;
 	}
@@ -75,10 +85,16 @@ public class Post {
 	public void setParentseq(int parentseq) {
 		this.parentseq = parentseq;
 	}
+	public int getGn() {
+		return gn;
+	}
+	public void setGn(int gn) {
+		this.gn = gn;
+	}
 	@Override
 	public String toString() {
 		return "Post [postseq=" + postseq + ", boardseq=" + boardseq + ", posttitle=" + posttitle + ", postcont="
 				+ postcont + ", userid=" + userid + ", post_dt=" + post_dt + ", postdel=" + postdel + ", parentseq="
-				+ parentseq + "]";
+				+ parentseq + ", gn=" + gn + "]";
 	}
 }

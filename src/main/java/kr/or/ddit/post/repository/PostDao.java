@@ -44,4 +44,14 @@ public class PostDao implements IPostDao {
 		return sqlSession.delete("bPost.dropPost", postseq);
 	}
 
+	@Override
+	public int insertReplyPost(SqlSession sqlSession, Post bpost) {
+		return sqlSession.insert("bPost.insertReplyPost", bpost);
+	}
+
+	@Override
+	public int getMaxPostNum(SqlSession sqlSession) {
+		return sqlSession.selectOne("bPost.getMaxPostNum");
+	}
+
 }

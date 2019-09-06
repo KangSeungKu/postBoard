@@ -1,7 +1,6 @@
 package kr.or.ddit.post.web;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,21 +26,26 @@ import kr.or.ddit.post.service.PostService;
 import kr.or.ddit.user.model.User;
 import kr.or.ddit.util.FileuploadUtil;
 
-@WebServlet("/postForm")
+@WebServlet("/replyForm")
 @MultipartConfig(maxFileSize = 1024*1024*5, maxRequestSize = 1024*1024*5)
-public class PostFormController extends HttpServlet {
+public class ReplyFormController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private static final Logger logger = LoggerFactory.getLogger(PostFormController.class);
     
-    private IPostService postService;
-    
-    @Override
-    public void init() throws ServletException {
-    	postService = new PostService();
-    }
+	private static final Logger logger = LoggerFactory.getLogger(ReplyFormController.class);
+	
+	private IPostService postService;
+	
+	@Override
+	public void init() throws ServletException {
+		postService = new PostService();
+	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/post/postForm.jsp").forward(request, response);
+		int postseq = Integer.parseInt(request.getParameter("reppostseq"));
+		Post bpost = postService.getPost(postseq);
+		
+		request.setAttribute("rPost", bpost);
+		request.getRequestDispatcher("/post/replyForm.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -55,8 +59,10 @@ public class PostFormController extends HttpServlet {
 		User userVo = (User) session.getAttribute("S_USERVO");
 		String userid = userVo.getUserId();
 		String postdel = "Y";
-		Post pt = new Post(boardseq, posttitle, postcont, userid, postdel);
-		
+		int postseq = Integer.parseInt(request.getParameter("rpostseq"));
+		int gn = Integer.parseInt(request.getParameter("rgn"));
+		Post pt = new Post(boardseq, posttitle, postcont, userid, postdel, postseq, gn);
+		logger.debug("{}", pt);
 		List<AttaFile> attaList = new ArrayList<AttaFile>();
 		
 		String filename = "";
@@ -79,11 +85,11 @@ public class PostFormController extends HttpServlet {
 		}
 		
 		logger.debug("{} {}", pt, attaList);
-		int insertCnt =  postService.insertPost(pt, attaList);
+		int replyCnt = postService.insertReplyPost(pt, attaList);
 		
 		int nextSeq = postService.getMaxPostNum();
 		response.sendRedirect(request.getContextPath() + "/detail?postseq=" + nextSeq);
-
+	
 	}
 
 }

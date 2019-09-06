@@ -7,4 +7,20 @@
 		insert into ATTAFILE (ATTASEQ, ATTAFILENAME, ATTAREALFILENAME, POSTSEQ)
 		values (atta_seq.nextval, #{attafilename}, #{attarealfilename}, #{postseq})
 	</insert>
+	
+	<delete id="deleteAttaFile" parameterType="int">
+		delete from ATTAFILE where ATTASEQ=${attaseq}
+	</delete>
+	
+	<delete id="deletePostAttaFile" parameterType="int">
+		delete from ATTAFILE where POSTSEQ=#{postseq}
+	</delete>
+	
+	<select id="getAttaFileList" parameterType="int" resultType="attaFile">
+		select * from ATTAFILE where POSTSEQ=#{postseq}
+	</select>
+	
+	<select id="getAttaFile" parameterType="int" resultType="attaFile">
+		select * from attafile where attaseq=#{attaseq}
+	</select>
 </mapper>

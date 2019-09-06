@@ -39,22 +39,26 @@ $(document).ready(function() {
 	});
 
 	// 전송버튼 클릭이벤트
-	$("#instBtn").click(function(){
+	$("#modifyBtn").click(function(){
 		if(confirm("저장하시겠습니까?")) {
 			// id가 smarteditor인 textarea에 에디터에서 대입
 			oEditors.getById["smarteditor"].exec("UPDATE_CONTENTS_FIELD", []);
 
 			// 이부분에 에디터 validation 검증
 			if(validation()) {
-				$("#postFrm").submit();
+				$('#mMode').val('modifyPost');
+				$("#frm").submit();
 			}
 		}
-	});
+	})
 	
 	$("#picture").change(function(){
 		var fileInput = document.getElementById("picture");
 		var files = fileInput.files;
-		if(files.length > 5){
+		
+		var existFiles = $('.imgFile').length;
+		
+		if(files.length + existFiles > 5){
 			alert("파일은 5개까지만 입력이 가능합니다.");
 			$("#picture").val("");
 		}
@@ -72,11 +76,16 @@ function validation(){
 
 	return true;
 }
+
+function delBtn(attaseq) {
+	$('#mMode').val('fileDel');
+	$('#attaseq').val(attaseq);
+	$("#frm").submit();
+}
 </script>
 </head>
 
 <body>
-
 <!-- header -->
 <%@include file="/commonJsp/header.jsp" %>
 <div class="container-fluid">
@@ -86,27 +95,44 @@ function validation(){
 	<%@include file="/commonJsp/left.jsp" %>
 </div>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				
-<form class="form-horizontal" id="postFrm" role="form" action="${cp }/postForm" method="post" enctype="multipart/form-data">
-<!-- bpost, mode -->
+
+<form class="form-horizontal" id="frm" role="form" action="${cp }/postModifyForm" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="postseq" value="${mPost.postseq }"/>
+	<input type="hidden" id="mMode" name="mMode"/>
+	<input type="hidden" id="attaseq" name="attaseq"/>
 	<div class="col-sm-12 blog-main">
 		<h2 class="sub-header">${S_POSTBOARDVO.boardnm }</h2>
 	</div>
-					<div class="form-group">
+					<div class="col-sm-12">
 						<label for="posttitle" class="col-sm-2 control-label">제목</label>
-						<div class="col-sm-8">
-							<input type="text" class="form-control" id="posttitle" name="posttitle"
-								value="${param.posttitle }">
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="posttitle" name="posttitle" value="${mPost.posttitle }">
 						</div>
+						<hr class="col-sm-10" />
 					</div>
-
-					<div class="form-group">
+					<div class="col-sm-12">
 						<label for="postcont" class="col-sm-2 control-label">글 내용</label>
 						<div class="col-sm-10">
-							<textarea class="form-control" name="smarteditor" id="smarteditor" rows="10" cols="100" style="width:766px; height:412px;"></textarea>
+							<textarea class="form-control" name="smarteditor" id="smarteditor" rows="10" cols="100" style="width:766px; height:412px;">${mPost.postcont }</textarea>
 						</div>
+						<hr class="col-sm-10" />
 					</div>
 					
+					<div class="col-sm-12">
+						<label for="userId" class="col-sm-2 control-label">첨부파일</label>
+						<div class="col-sm-10">
+						<c:forEach items="${attaList }" var="afile" varStatus="loop">
+							<div class="imgFile col-sm-2">
+								${afile.attafilename }
+							</div>
+							<div class="col-sm-10">
+								<button type="button" class="btn btn-default" onclick="delBtn(${afile.attaseq })">삭제</button>
+							</div>
+						</c:forEach>
+						</div>
+					</div>
+		
+					<hr class="col-sm-10" />
 					<div class="form-group">
 						<label for="userId" class="col-sm-2 control-label">첨부파일</label>
 						<div class="col-sm-8">
@@ -114,10 +140,10 @@ function validation(){
 								placeholder="사용자 사진">
 						</div>
 					</div>
-
-					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-10">
-							<button type="button" id="instBtn" class="btn btn-default">저장</button>
+					
+					<div class="col-sm-12">
+						<div class="col-sm-offset-2 col-sm-12">
+							<button type="button" id="modifyBtn" class="btn btn-default">저장</button>
 						</div>
 					</div>
 				</form>

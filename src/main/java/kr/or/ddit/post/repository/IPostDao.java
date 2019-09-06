@@ -20,6 +20,17 @@ public interface IPostDao {
 	int insertPost(SqlSession sqlSession, Post bpost);
 	
 	/**
+	* Method : insertReplyPost
+	* 작성자 : PC-16
+	* 변경이력 :
+	* @param sqlSession
+	* @param bpost
+	* @return
+	* Method 설명 : 답변작성
+	*/
+	int insertReplyPost(SqlSession sqlSession, Post bpost);
+	
+	/**
 	* Method : updatePost
 	* 작성자 : PC-16
 	* 변경이력 :
@@ -82,4 +93,14 @@ public interface IPostDao {
 	* Method 설명 : 게시글 삭제
 	*/
 	int dropPost(SqlSession sqlSession, int postseq);
+	
+	/**
+	* Method : getMaxPostNum
+	* 작성자 : PC-16
+	* 변경이력 :
+	* @param sqlSession
+	* @return
+	* Method 설명 : 게시글 번호의 최대값 조회
+	*/
+	int getMaxPostNum(SqlSession sqlSession);
 }

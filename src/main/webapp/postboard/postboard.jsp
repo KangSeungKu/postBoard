@@ -99,7 +99,7 @@
 							<c:if test="${bpost.parentseq != 0 }">→&nbsp;</c:if>
 							<c:choose>
 								<c:when test="${bpost.postdel == 'Y' }">
-									${fn:substring(bpost.posttitle,1,fn:length(bpost.posttitle)) }
+									<a href="${cp }/detail?postseq=${bpost.postseq }">${fn:substring(bpost.posttitle,1,fn:length(bpost.posttitle)) }</a>
 								</c:when>
 								<c:otherwise>
 									[삭제된 게시글 입니다.]

@@ -39,17 +39,17 @@ $(document).ready(function() {
 	});
 
 	// 전송버튼 클릭이벤트
-	$("#instBtn").click(function(){
+	$("#replyBtn").click(function(){
 		if(confirm("저장하시겠습니까?")) {
 			// id가 smarteditor인 textarea에 에디터에서 대입
 			oEditors.getById["smarteditor"].exec("UPDATE_CONTENTS_FIELD", []);
 
 			// 이부분에 에디터 validation 검증
 			if(validation()) {
-				$("#postFrm").submit();
+				$("#replyFrm").submit();
 			}
 		}
-	});
+	})
 	
 	$("#picture").change(function(){
 		var fileInput = document.getElementById("picture");
@@ -76,7 +76,6 @@ function validation(){
 </head>
 
 <body>
-
 <!-- header -->
 <%@include file="/commonJsp/header.jsp" %>
 <div class="container-fluid">
@@ -87,8 +86,12 @@ function validation(){
 </div>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				
-<form class="form-horizontal" id="postFrm" role="form" action="${cp }/postForm" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" id="replyFrm" role="form" action="${cp }/replyForm" method="post" enctype="multipart/form-data">
 <!-- bpost, mode -->
+	<div class="form-group">
+		<input type="hidden" class="form-control" id="rpostseq" name="rpostseq" value="${rPost.postseq }">
+		<input type="hidden" class="form-control" id="rgn" name="rgn" value="${rPost.gn }">
+	</div>
 	<div class="col-sm-12 blog-main">
 		<h2 class="sub-header">${S_POSTBOARDVO.boardnm }</h2>
 	</div>
@@ -117,7 +120,7 @@ function validation(){
 
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-10">
-							<button type="button" id="instBtn" class="btn btn-default">저장</button>
+							<button type="button" id="replyBtn" class="btn btn-default">저장</button>
 						</div>
 					</div>
 				</form>

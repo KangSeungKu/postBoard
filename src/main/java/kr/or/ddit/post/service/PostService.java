@@ -89,4 +89,31 @@ public class PostService implements IPostService {
 		return bpost;
 	}
 
+	@Override
+	public int insertReplyPost(Post bpost, List<AttaFile> attaList) {
+		SqlSession sqlSession = MybatisUtil.getSession();
+		int insertCnt = postDao.insertReplyPost(sqlSession, bpost);
+		
+		if(attaList.size() > 0) {			
+			for(AttaFile file : attaList) {
+				file.setPostseq(bpost.getPostseq());
+				attaFileDao.insertAttaFile(sqlSession, file);
+			}
+		}
+		
+		sqlSession.commit();
+		sqlSession.close();
+		
+		return insertCnt;
+	}
+
+	@Override
+	public int getMaxPostNum() {
+		SqlSession sqlSession = MybatisUtil.getSession();
+		int maxseq = postDao.getMaxPostNum(sqlSession);
+		sqlSession.close();
+		
+		return maxseq;
+	}
+
 }
